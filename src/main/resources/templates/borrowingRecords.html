@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>图书借阅记录</title>
+</head>
+<body onload="showHint()">
+<p th:text="${name} + '的图书借阅记录：'"></p>
+<p th:text="'当前时间'+${today}"></p>
+<div>
+    <table border="1">
+        <tbody>
+        <tr>
+            <th>书名</th>&nbsp
+            <th>作者</th>&nbsp
+            <th>借书时间</th>&nbsp
+            <th>到期时间</th>&nbsp
+            <th>还书时间</th>&nbsp
+            <th>我的评分</th>&nbsp
+            <th>评分</th>&nbsp
+        </tr><br>
+        <tr th:each="br:${brVOs}">
+            <td th:text="${br.bookName}"></td>&nbsp
+            <td th:text="${br.author}"></td>&nbsp
+            <td th:text="${br.borrowingDate}"></td>&nbsp
+            <td th:text="${br.deadline}"></td>&nbsp
+            <td th:text="${br.result}?${br.returningDate}:'尚未还书'"></td>&nbsp
+            <td th:text="${br.score}?${br.score}:'尚未评分'" ></td>&nbsp
+            <td th:unless="${br.score}"><a th:href="@{/goToPostScore(brId=${br.borrowingId})}">评分</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p id="hint" th:text="${hint}"></p>
+
+<script>
+    function showHint() {
+        document.getElementById("hint").style.visibility="hidden";
+        var hint = document.getElementById("hint").innerHTML;
+        if(hint != ""){
+            alert(hint);
+        }
+    }
+</script>
+
+</body>
+</html>

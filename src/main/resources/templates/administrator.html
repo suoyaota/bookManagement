@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员</title>
+</head>
+<body onload="setButtonFalse()">
+<p th:text="'管理员:' + ${Name123} + '，您好！'"></p>
+<div>
+    <p>设置管理员</p>
+    请输入用户名：<br>
+    <input id="userName" type="text"><br>
+    <button id="searchUserName">搜索</button>
+    <div id= "set">
+    </div>
+    <button id = "setA" onclick="setA()">设为管理员</button>
+</div>
+<br>
+<p><a href="updateHeat">更新</a>图书热度</p>
+<br>
+<div>
+    <p>添加图书</p>
+    <form action="/addBook" method="post">
+        <fieldset>
+            <legend>图书信息</legend>
+            书名：《<input id = "bookName" name="bookName" type = "text">》<br>
+            作者：<input id = "author" name="author" type = "text"><br>
+            <p>简介：</p>
+            <textarea id="introduction" name="introduction"
+                      rows="5" cols="70" maxlength="50">简介最多五十字</textarea><br>
+            分类：
+            <select  id="classification" name="classification">
+                <option value="A 马、列、毛、邓">A 马、列、毛、邓</option>
+                <option value="B 哲学、宗教">B 哲学、宗教</option>
+                <option value="C 社会科学总论">C 社会科学总论</option>
+                <option value="D 政治、法律">D 政治、法律</option>
+            </select><br>
+            <button id="addBookBtn" type="submit">提交</button>
+        </fieldset>
+    </form>
+</div>
+
+<div>
+    <table>
+        <thead>
+        <tr>
+            <th>当前书库图书</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>书名</th>
+            <th>作者</th>
+            <th>简介</th>
+            <th>分类</th>
+            <th>评分</th>
+            <th>借阅热度</th>
+        </tr><br>
+        <tr th:each="b:${administratorVOs}">
+            <td th:text="${b.bookName}"></td>
+            <td th:text="${b.author}"></td>
+            <td th:text="${b.introduction}"></td>
+            <td th:text="${b.classification}"></td>
+            <td th:text="${b.bookScore}?'评分：'+${b.bookScore}:'评分：暂无评分'"></td>
+            <td th:text="${b.bookPopularity}+'℃'"></td>
+            <td><a th:href="@{/deleteBook(bookId=${b.bookId})}">删除</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<script>
+    // function addBook() {
+    //     var bookName = document.getElementById("bookName").value;
+    //     var author = document.getElementById("author").value;
+    //     var introduction = document.getElementById("introduction").value;
+    //     var classification = document.getElementById("classification").value;
+    //     if(bookName == ""){
+    //         alert("书名不能为空");
+    //     }
+    //     if(author == ""){
+    //         alert("作者不能为空");
+    //     }
+    //     if(introduction == ""){
+    //         alert("简介不能为空");
+    //     }
+    //     if(classification == ""){
+    //         alert("分类不能为空");
+    //     }
+    //     $.ajax({
+    //         url:"/book",
+    //         type:"post",
+    //         dataType:"json",
+    //         data:{
+    //             bookName:bookName,
+    //             author:author,
+    //             introduction:introduction,
+    //             classification:classification
+    //         },
+    //         success:function () {
+    //             //alert("图书添加成功")
+    //             // var r = confirm("添加图书成功");
+    //             // if(r == true)
+    //         },
+    //         error:function () {
+    //
+    //         }
+    //     });
+    // }
+
+    function setButtonFalse() {
+        document.getElementById("setA").disabled = true;
+    }
+
+    var xmlHttp;
+    $("#searchUserName").click(function () {
+        var userName = document.getElementById("userName").value;
+        var url = "/checkAdministratorName?userName=" + userName;
+        xmlHttp = new XMLHttpRequest();
+        xmlHttp.onreadystatechange = checkResult;
+        xmlHttp.open("GET",url,true);
+        xmlHttp.send(null);
+    });
+
+    function checkResult() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            if (xmlHttp.responseText == 1) {
+                document.getElementById("set").innerHTML = "<p style=\"color:red\">用户不存在</p>";
+                document.getElementById("setA").disabled = true;
+            } else if(xmlHttp.responseText == 2){
+                document.getElementById("set").innerHTML = "<p style=\"color:red\">该用户已经是管理员</p>";
+                document.getElementById("setA").disabled = true;
+            }else{
+                document.getElementById("set").innerHTML = xmlHttp.responseText;
+                document.getElementById("setA").disabled = false;
+            }
+        }
+    }
+    function setA() {
+        var userName = document.getElementById("set").innerHTML;
+        $.ajax({
+            url:"/setAdministrator",
+            type:"post",
+            dataType:"json",
+            data:{
+                userName:userName
+            },
+            success:function () {
+                alert("设置成功")
+            },
+            error:function (error) {
+
+            }
+
+        });
+    }
+
+</script>
+</body>
+</html>

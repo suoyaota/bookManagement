@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>图书管理系统</title>
+</head>
+<body>
+<p th:text="'普通用户:' + ${Name} + '，您好！'"></p>
+
+<form action="/searchBook" method="get">
+    输入信息：<input id = "bookInfo" name="bookInfo"type="text"><br>
+    <input type="radio" name="infoType" value="bookName"checked="checked"> 书名<br>
+    <input type="radio" name="infoType" value="author" > 作者<br>
+    <input type="submit" value="搜索">
+</form>
+
+<div>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>搜索结果</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>书名</th>
+            <th>作者</th>
+            <th>简介</th>
+            <th>分类</th>
+            <th>评分</th>
+            <th>借阅热度</th>
+            <th>图书状态</th>
+        </tr><br>
+        <tr th:each="b:${studentBookSearchedVOs}">
+            <td th:text="${b.bookName}"></td>
+            <td th:text="${b.author}"></td>
+            <td th:text="${b.introduction}"></td>
+            <td th:text="${b.classification}"></td>
+            <td th:text="${b.bookScore}?${b.bookScore}:'暂无评分'"></td>
+            <td th:text="${b.bookPopularity}+'℃'"></td>
+            <td><a th:href="@{/bookState(bookId=${b.bookId})}">图书状态详情</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>我借阅的图书</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>书名</th>
+            <th>作者</th>
+            <th>简介</th>
+            <th>分类</th>
+            <th>评分</th>
+            <th>还书</th>
+        </tr><br>
+        <tr th:each="b:${studentMyBookVOs}">
+            <td th:text="${b.bookName}"></td>
+            <td th:text="${b.author}"></td>
+            <td th:text="${b.introduction}"></td>
+            <td th:text="${b.classification}"></td>
+            <td th:text="${b.bookScore}?${b.bookScore}:'暂无评分'"></td>
+            <td><a th:href="@{/returnBook(bookId=${b.bookId})}">还书</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<p><a href="/borrowingRecord">我的图书借阅记录</a></p>
+<p><a href="/BookPopularityLeaderBoard">图书热度排行榜（前十）</a></p>
+<p><a href="/userLeaderBoard">个人借阅排行榜（前十）</a></p>
+<div>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>全体图书</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th>书名</th>
+            <th>作者</th>
+            <th>简介</th>
+            <th>分类</th>
+            <th>评分</th>
+            <th>借阅热度</th>
+        </tr><br>
+        <tr th:each="b:${administratorVOs}">
+            <td th:text="${b.bookName}"></td>
+            <td th:text="${b.author}"></td>
+            <td th:text="${b.introduction}"></td>
+            <td th:text="${b.classification}"></td>
+            <td th:text="${b.bookScore}?${b.bookScore}:'暂无评分'"></td>
+            <td th:text="${b.bookPopularity}+'℃'"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+CREATE TABLE `user` (
+  `userId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+  `userName` varchar(100) NOT NULL COMMENT '登录名',
+  `password` varchar(100) NOT NULL COMMENT '登录密码',
+  `name` varchar(100) NOT NULL COMMENT '用户姓名',
+  `isAdministrator` int(1) DEFAULT '0' COMMENT '0是学生，1是管理员，默认是学生',
+  `brNum` bigint(20) DEFAULT '0' COMMENT '借阅次数',
+  PRIMARY KEY (`userID`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8
+
+CREATE TABLE `book` (
+  `bookId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+  `bookName` varchar(100) NOT NULL COMMENT '书名',
+  `author` varchar(100) NOT NULL COMMENT '作者',
+  `introduction` text NOT NULL COMMENT '书籍简介',
+  `classification` varchar(100) NOT NULL COMMENT '书籍分类',
+  `bookState` int(1) DEFAULT '1' COMMENT '默认1表示可借',
+  PRIMARY KEY (`bookID`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8
+
+CREATE TABLE `borrowingrecord` (
+  `borrowingId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键，自增',
+  `userId` bigint(20) NOT NULL COMMENT '借书人',
+  `bookId` bigint(20) NOT NULL COMMENT '书',
+  `borrowingDate` date DEFAULT NULL,
+  `returningDate` date DEFAULT '1900-01-01',
+  `result` int(1) DEFAULT '0' COMMENT '默认0，借阅未完成',
+  `score` int(2) DEFAULT '0' COMMENT '默认0未评分',
+  PRIMARY KEY (`borrowingID`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8
+
+CREATE TABLE `bookpopularity` (
+  `bookName` varchar(100) NOT NULL,
+  `bookPopularity` float(4,1) DEFAULT '0.0' COMMENT '图书热度，默认0',
+  `bookScore` float(3,1) DEFAULT '0.0' COMMENT '书籍评分',
+  `scoreNum` bigint(20) DEFAULT '0' COMMENT '评价次数',
+  PRIMARY KEY (`bookName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8

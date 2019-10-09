@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+</head>
+<body>
+<form id = "registerForm">
+    用户名：&nbsp&nbsp&nbsp<input id = "userName" type="text" onkeyup="check()"> <span id = "checkResult"></span><br>
+    密码：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input id = "password" type="password"><br>
+    确认密码：<input id = "password2" type="password" onkeyup="checkPassword()"><span id = "checkPasswordResult"></span><br>
+    姓名：&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input id = "name" type="text"><br>
+</form>
+<button id = "button">注册</button>
+
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    function checkPassword() {
+        var password = document.getElementById("password").value;
+        var password2 = document.getElementById("password2").value;
+        if (password == password2){
+            document.getElementById("checkPasswordResult").innerHTML = "<font color='green'>密码确认一致</font>";
+            document.getElementById("button").disabled = false;
+        }else{
+            document.getElementById("checkPasswordResult").innerHTML = "<font color='red'>密码不一致</font>";
+            document.getElementById("button").disabled = true;
+        }
+    }
+    var xmlhttp;
+    function check(){
+        //console.log("sdf");
+        var userName = $.trim($("#userName").val());
+        var url = "/userName/check?userName="+userName;
+        xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = checkResult;
+        xmlhttp.open("GET",url,true);
+        xmlhttp.send(null);
+    }
+    function checkResult(){
+        if(xmlhttp.readyState==4 && xmlhttp.status == 200){
+
+            if(xmlhttp.responseText == 1){
+                document.getElementById("checkResult").innerHTML = xmlhttp.responseText;
+                document.getElementById("button").disabled = false;
+            }else if(xmlhttp.responseText == 0){
+                document.getElementById("checkResult").innerHTML = "<font color='red'>已经存在</font>";
+                document.getElementById("button").disabled = true;
+            }
+        }
+    }
+
+
+
+    $("#button").click(function () {
+        var userName = $.trim($("#userName").val());
+        var password = $.trim($("#password").val());
+        var name = $.trim($("#name").val())
+
+        $.ajax(
+            {
+                url:"/signUp",
+                type:"post",
+                dataType:"json",
+                data:{
+                    userName:userName,
+                    password:password,
+                    name:name
+                },
+                success:function (msg) {
+                    if(msg == 1){
+                        var r = confirm("注册成功，点击确定返回登录界面");
+                        if(r == true) window.location.href = "/";
+                    }
+                },
+                error:{}
+            }
+        );
+
+    });
+</script>
+
+</body>
+</html>

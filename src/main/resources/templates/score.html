@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>评分</title>
+</head>
+<body>
+<p th:text="${name}+'请评价'+${bookName}+'。(1~10分，满分10分)'"></p>
+<form action="/postScore" method="post">
+<!--    <select id="score" name="score" required>-->
+<!--        <option value="10">10</option>-->
+<!--        <option value="9">9</option>-->
+<!--        <option value="8">8</option>-->
+<!--        <option value="7">7</option>-->
+<!--        <option value="6">6</option>-->
+<!--        <option value="5">5</option>-->
+<!--        <option value="4">4</option>-->
+<!--        <option value="3">3</option>-->
+<!--        <option value="2">2</option>-->
+<!--        <option value="1">1</option>-->
+<!--    </select>-->
+    <input type="radio" name="score" value=10 checked="checked">10分<br>
+    <input type="radio" name="score" value=9 >9分<br>
+    <input type="radio" name="score" value=8 >8分<br>
+    <input type="radio" name="score" value=7 >7分<br>
+    <input type="radio" name="score" value=6 >6分<br>
+    <input type="radio" name="score" value=5 >5分<br>
+    <input type="radio" name="score" value=4 >4分<br>
+    <input type="radio" name="score" value=3 >3分<br>
+    <input type="radio" name="score" value=2 >2分<br>
+    <input type="radio" name="score" value=1 >1分<br>
+    <input type="submit" value="提交">
+</form>
+
+<!--<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>-->
+<!--<script>-->
+<!--    // var obj = document.getElementsByName("score");-->
+<!--    // var index = obj.selectedIndex;-->
+<!--    // var scoreVal = obj.options[index].value;-->
+<!--    var score = $(":radio[name='score']:checked").val();-->
+
+<!--    $("#postScoreBtn").click(function () {-->
+<!--        $.ajax({-->
+<!--            url:"postScore",-->
+<!--            method:"post",-->
+<!--            dataType:"json",-->
+<!--            data:{-->
+<!--                score:score-->
+<!--            },-->
+<!--            success:function (msg) {-->
+<!--                if(msg == "1")-->
+<!--                window.open("/borrowingRecord");-->
+<!--            },-->
+<!--            error:{}-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>图书借阅详情</title>
+</head>
+<body>
+<p th:text="'书名：'+ ${book.bookName}"></p>
+<p th:text="'作者：' + ${book.author}"></p>
+<p th:text="'简介：' + ${book.introduction}"></p>
+<p th:text="'分类：'+ ${book.classification}"></p>
+<p th:text="${book.bookScore}?'评分：'+${book.bookScore}:'评分：暂无评分'"></p>
+<p th:text="'借阅热度：'+${book.bookPopularity}+'℃'"></p>
+<p id= "state" th:text="${book.bookState}"></p>
+<div id = "1">
+    <button id = "borrowBtn">借书</button>
+</div>
+<p id="bookID" th:text="${book.bookId}"></p>
+<p id="userID" th:text="${userId}"></p>
+<div id = "2" >
+    <p >不可借阅</p>
+</div>
+
+
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    document.getElementById("bookID").style.visibility="hidden";
+    document.getElementById("userID").style.visibility="hidden";
+
+    $("#borrowBtn").click(function () {
+        var bookID = document.getElementById("bookID").innerHTML;
+        var userID = document.getElementById("userID").innerHTML;
+
+        $.ajax({
+            url:"/borrowBook",
+            method:"post",
+            dataType:"json",
+            data:{
+                bookId:bookID,
+                userId:userID
+            },
+            success:function (msg) {
+               if (msg === 1){
+                   var r = confirm("借阅成功！");
+                   if(r == true){
+                       window.location.href="/bookState?bookId=" + bookID;
+                   }
+               }
+            },
+            error: {
+
+            }
+        });
+
+
+
+    });
+
+        var state = document.getElementById("state").innerHTML;
+
+        if(state == "1"){
+            document.getElementById("state").innerHTML = "图书状态：可以借阅";
+            document.getElementById("2").style.visibility="hidden";
+        }else{
+            document.getElementById("1").style.visibility="hidden";
+            document.getElementById("state").style.visibility="hidden";
+        }
+
+
+
+</script>
+
+</body>
+</html>
