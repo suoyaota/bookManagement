@@ -57,7 +57,7 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.17</version>  <!-- 注意使用本机MySQL版本 -->
+            <version>8.0.28</version>  <!-- 注意使用本机MySQL版本 -->
         </dependency>
 
         <dependency>
